@@ -25,17 +25,23 @@ const chainMaker = {
   },
 
   removeLink(position) {
-    this.chain.splice(position-1,1);
+    if (typeof position !== 'number' || position < 1 || position > this.getLength() || !Number.isInteger(position)) {
+      this.chain = [];
+      throw new Error("You can't remove incorrect link!");
+    }
+    this.chain.splice(position - 1, 1);
     return this;
   },
-  
+
   reverseChain() {
     this.chain.reverse();
     return this;
   },
-  
+
   finishChain() {
-    return '( ' + this.chain.join(' )~~( ') + ' )';
+    const result = this.chain.map(item => `( ${item} )`).join('~~');
+    this.chain = [];
+    return result;
   }
 };
 
